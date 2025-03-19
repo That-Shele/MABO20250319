@@ -23,7 +23,7 @@ public partial class Mabo20250319dbContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-    //Scaffold-DbContext "Data Source=localhost\SQLEXPRESS;Initial Catalog=MABO20250319DB;Integrated Security=True;Encrypt=False" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
+    //Scaffold-DbContext "Data Source=localhost\SQLEXPRESS;Initial Catalog=Test20250319DB;Integrated Security=True;Encrypt=False" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
