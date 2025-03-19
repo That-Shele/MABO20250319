@@ -1,13 +1,12 @@
 ﻿@model Category
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalles de la categoria";
 }
 
-<h1>Details</h1>
+<h1><i class="bi bi-bar-chart-steps me-3"></i>@ViewData["Title"]</h1>
 
 <div>
-    <h4>Category</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -25,6 +24,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.CategoryId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.CategoryId" class="btn btn-warning"><i class="bi bi-pen me-3"></i> Ir a editar</a>
+    <a asp-action="Index" class="btn btn-info"><i class="bi bi-arrow-90deg-left"></i> Volver</a>
 </div>

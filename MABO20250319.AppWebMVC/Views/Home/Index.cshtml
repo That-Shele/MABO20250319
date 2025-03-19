@@ -3,6 +3,15 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Bienvenido/a</h1>
+    @if (User.Identity.IsAuthenticated)
+    {
+        var nombre = User.FindFirst("Name")?.Value;
+        <p>Hola de nuevo, @nombre</p>
+    }
+    else
+    {
+        <p>Inicia sesión <a asp-controller="Users" asp-action="Login">para acceder a todas nuestras funciones</a>.</p>
+    }
+
 </div>
