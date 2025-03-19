@@ -26,9 +26,16 @@ namespace MABO20250319.AppWebMVC.Controllers
         }
 
         // GET: Users
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(User user, int topRegistry = 10)
         {
-            return View(await _context.Users.ToListAsync());
+            var query = _context.Users.AsQueryable();
+            if (!string.IsNullOrWhiteSpace(user.Email))
+                query = query.Where(s => s.Email.Contains(user.Email));
+            if (!string.IsNullOrWhiteSpace(user.PasswordHash))
+                query = query.Where(s => s.PasswordHash.Contains(user.PasswordHash));
+            if (topRegistry > 0)
+                query = query.Take(topRegistry);
+            return View(await query.ToListAsync());
         }
 
         // GET: Users/Details/5

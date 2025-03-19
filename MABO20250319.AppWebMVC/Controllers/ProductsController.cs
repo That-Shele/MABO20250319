@@ -21,10 +21,30 @@ namespace MABO20250319.AppWebMVC.Controllers
         }
 
         // GET: Products
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(Product product, int topRegistry = 10)
         {
-            var mabo20250319dbContext = _context.Products.Include(p => p.Brand).Include(p => p.Category);
-            return View(await mabo20250319dbContext.ToListAsync());
+            var query = _context.Products.AsQueryable();
+            if (!string.IsNullOrWhiteSpace(product.ProductName))
+                query = query.Where(s => s.ProductName.Contains(product.ProductName));
+            if (!string.IsNullOrWhiteSpace(product.Description))
+                query = query.Where(s => s.Description.Contains(product.Description));
+            if (product.BrandId > 0)
+                query = query.Where(s => s.BrandId == product.BrandId);
+            if (product.CategoryId > 0)
+                query = query.Where(s => s.CategoryId == product.CategoryId);
+            if (topRegistry > 0)
+                query = query.Take(topRegistry);
+            query = query
+                .Include(p => p.Brand).Include(p => p.Category);
+
+            var brands = _context.Brands.ToList();
+            brands.Add(new Brand { BrandName = "SELECCIONAR", BrandId = 0 });
+            var categories = _context.Categories.ToList();
+            categories.Add(new Category { CategoryName = "SELECCIONAR", CategoryId = 0 });
+            ViewData["BrandId"] = new SelectList(brands, "BrandId", "BrandName", 0);
+            ViewData["CategoryId"] = new SelectList(categories, "CategoryId", "CategoryName", 0);
+
+            return View(await query.ToListAsync());
         }
 
         // GET: Products/Details/5
@@ -50,8 +70,8 @@ namespace MABO20250319.AppWebMVC.Controllers
         // GET: Products/Create
         public IActionResult Create()
         {
-            ViewData["BrandId"] = new SelectList(_context.Brands, "BrandId", "BrandId");
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryId");
+            ViewData["BrandId"] = new SelectList(_context.Brands, "BrandId", "BrandName");
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName");
             return View();
         }
 
@@ -68,8 +88,8 @@ namespace MABO20250319.AppWebMVC.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BrandId"] = new SelectList(_context.Brands, "BrandId", "BrandId", product.BrandId);
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryId", product.CategoryId);
+            ViewData["BrandId"] = new SelectList(_context.Brands, "BrandId", "BrandName", product.BrandId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName", product.CategoryId);
             return View(product);
         }
 
@@ -86,8 +106,8 @@ namespace MABO20250319.AppWebMVC.Controllers
             {
                 return NotFound();
             }
-            ViewData["BrandId"] = new SelectList(_context.Brands, "BrandId", "BrandId", product.BrandId);
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryId", product.CategoryId);
+            ViewData["BrandId"] = new SelectList(_context.Brands, "BrandId", "BrandName", product.BrandId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName", product.CategoryId);
             return View(product);
         }
 
@@ -123,8 +143,8 @@ namespace MABO20250319.AppWebMVC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BrandId"] = new SelectList(_context.Brands, "BrandId", "BrandId", product.BrandId);
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryId", product.CategoryId);
+            ViewData["BrandId"] = new SelectList(_context.Brands, "BrandId", "BrandName", product.BrandId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName", product.CategoryId);
             return View(product);
         }
 

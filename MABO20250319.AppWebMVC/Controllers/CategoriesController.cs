@@ -21,9 +21,14 @@ namespace MABO20250319.AppWebMVC.Controllers
         }
 
         // GET: Categories
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(Category category, int topRegistry = 10)
         {
-            return View(await _context.Categories.ToListAsync());
+            var query = _context.Categories.AsQueryable();
+            if (!string.IsNullOrWhiteSpace(category.CategoryName))
+                query = query.Where(s => s.CategoryName.Contains(category.CategoryName));
+            if (topRegistry > 0)
+                query = query.Take(topRegistry);
+            return View(await query.ToListAsync());
         }
 
         // GET: Categories/Details/5
