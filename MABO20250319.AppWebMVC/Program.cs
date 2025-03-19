@@ -1,7 +1,15 @@
+using MABO20250319.AppWebMVC.Models;
+using Microsoft.EntityFrameworkCore;
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<Mabo20250319dbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Cnn"));
+});
 
 var app = builder.Build();
 
