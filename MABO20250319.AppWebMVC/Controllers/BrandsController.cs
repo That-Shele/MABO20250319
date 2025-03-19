@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using MABO20250319.AppWebMVC.Models;
 
 namespace MABO20250319.AppWebMVC.Controllers
 {
+    [Authorize]
     public class BrandsController : Controller
     {
         private readonly Mabo20250319dbContext _context;
